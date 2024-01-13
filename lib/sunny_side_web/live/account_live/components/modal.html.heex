@@ -1,0 +1,49 @@
+<%!--  form modal component --%>
+<div>
+  <h4 class="text-xl font-bold mb-4">
+    <%= if @state == :edit, do: "Update", else: "Create new" %> account
+  </h4>
+  <.form
+    for={@form}
+    phx-submit="create_or_edit"
+    phx-target={@myself}
+    class="grid grid-cols-2 gap-4"
+  >
+    <div class="mb-4">
+      <.input label="Account Name" field={@form[:account_name]} />
+    </div>
+    <div class="mb-4">
+      <.input label="Account Number" field={@form[:account_number]} />
+    </div>
+    <div class="mb-4">
+      <.input label="Payout Amount" field={@form[:payout_amount]} />
+    </div>
+    <div class="mb-4">
+      <.input label="Payout Currency" field={@form[:payout_currency]} />
+    </div>
+    <div class="mb-4">
+      <.input label="Payout Bank" field={@form[:payout_bank]} />
+    </div>
+    <div class="mb-4">
+      <.input
+        label="Status"
+        type="select"
+        field={@form[:status]}
+        options={[Active: :active, Inactive: :inactive, Pending: :pending]}
+      />
+    </div>
+    <div class="flex justify-between col-span-2">
+      <.button
+        :if={@state == :edit}
+        class="!bg-red-500 text-white"
+        phx-target={@myself}
+        phx-click="delete"
+      >
+        <.icon name="hero-trash" class="mr-2" />Delete
+      </.button>
+      <.button type="submit" class="ml-auto">
+        <%= if @state == :edit, do: "Update", else: "Create" %>
+      </.button>
+    </div>
+  </.form>
+</div>

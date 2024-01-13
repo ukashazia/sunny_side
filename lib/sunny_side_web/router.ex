@@ -18,6 +18,10 @@ defmodule SunnySideWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
+
+    live "/accounts", AccountLive.Index, :index
+    live "/accounts/:account_number/edit", AccountLive.Index, :edit_account
+    live "/accounts/new", AccountLive.Index, :new_account
   end
 
   # Other scopes may use custom stacks.

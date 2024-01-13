@@ -53,8 +53,9 @@ defmodule SunnySideWeb do
     quote do
       use Phoenix.LiveView,
         layout: {SunnySideWeb.Layouts, :app}
-        def ok(socket), do: {:ok, socket}
-        def noreply(socket), do: {:noreply, socket}
+
+      def ok(socket), do: {:ok, socket}
+      def noreply(socket), do: {:noreply, socket}
 
       unquote(html_helpers())
     end
@@ -63,6 +64,8 @@ defmodule SunnySideWeb do
   def live_component do
     quote do
       use Phoenix.LiveComponent
+      def ok(socket), do: {:ok, socket}
+      def noreply(socket), do: {:noreply, socket}
 
       unquote(html_helpers())
     end

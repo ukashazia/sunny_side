@@ -1,0 +1,32 @@
+<div>
+  <div class="grid place-items-center mx-56 relative">
+    <div class="flex justify-between items-center w-full mb-9">
+      <h1 class="text-3xl font-bold">Accounts</h1>
+      <.button phx-click="new_account">
+        New Account
+      </.button>
+    </div>
+    <.table rows={@accounts} id="table">
+      <:col :let={account} label="Account Name"><%= account.account_name %></:col>
+      <:col :let={account} label="Account Number"><%= account.account_number %></:col>
+      <:col :let={account} label="Payout Bank"><%= account.payout_bank %></:col>
+      <:col :let={account} label="Payout Currency"><%= account.payout_currency %></:col>
+      <:col :let={account} label="Payout Amount"><%= account.payout_amount %></:col>
+      <:col :let={account} label="Status"><%= account.status %></:col>
+      <:col :let={account}>
+        <div
+          phx-click="edit"
+          phx-value-account_number={account.account_number}
+          class="cursor-pointer"
+        >
+          <.icon name="hero-pencil-square" />
+        </div>
+      </:col>
+    </.table>
+  </div>
+</div>
+<div :if={@live_action == :edit_account || @live_action == :new_account}>
+  <.modal show={true} id="modal" on_cancel={JS.navigate(~p"/accounts")}>
+    <.live_component module={SunnySideWeb.AccountLive.Components.Modal} id="edit-account-modal" />
+  </.modal>
+</div>
