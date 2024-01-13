@@ -9,6 +9,7 @@ defmodule SunnySide.Repo.Migrations.CreateAccount do
       add :payout_currency, :string
       add :payout_amount, :string
       add :status, :string
+      timestamps()
     end
 
     create unique_index(:accounts, [:account_number])

@@ -19,6 +19,7 @@ defmodule SunnySideWeb.AccountLive.Components.Modal do
 
     socket
     |> account_changeset_to_form(socket.assigns.account)
+    |> IO.inspect(label: "Socket")
     |> ok()
   end
 
@@ -29,7 +30,7 @@ defmodule SunnySideWeb.AccountLive.Components.Modal do
 
   def handle_event(
         "create_or_edit",
-        %{"accounts" => params},
+        %{"account" => params},
         %{assigns: %{account: account}} = socket
       ) do
     socket =
@@ -37,8 +38,7 @@ defmodule SunnySideWeb.AccountLive.Components.Modal do
         {:ok, account} ->
           socket
           |> assign(:account, account)
-          |> send_parent_update()
-          |> push_patch(to: "/accounts")
+          |> push_navigate(to: "/accounts")
           |> put_flash(
             :info,
             "Account #{if socket.assigns.state == :edit, do: "updated", else: "created"} successfully"
@@ -47,7 +47,10 @@ defmodule SunnySideWeb.AccountLive.Components.Modal do
         {:error, changeset} ->
           socket
           |> account_changeset_to_form(changeset)
-          |> put_flash(:error, "Error creating account")
+          |> put_flash(
+            :error,
+            "Error #{if socket.assigns.state == :edit, do: "updating", else: "creating"} account"
+          )
       end
 
     socket
@@ -63,8 +66,7 @@ defmodule SunnySideWeb.AccountLive.Components.Modal do
       case Account.delete_account_by_number(account_number) do
         {:ok, _} ->
           socket
-          |> send_parent_update()
-          |> push_patch(to: "/accounts")
+          |> push_navigate(to: "/accounts")
           |> put_flash(:info, "Account deleted successfully")
 
         {:error, _} ->
@@ -80,14 +82,9 @@ defmodule SunnySideWeb.AccountLive.Components.Modal do
     form =
       Ecto.Changeset.change(changeset)
       |> Map.put(:action, :validate)
-      |> to_form()
+      |> to_form(as: :account)
 
     socket
     |> assign(:form, form)
-  end
-
-  defp send_parent_update(socket) do
-    send(self(), :update)
-    socket
   end
 end

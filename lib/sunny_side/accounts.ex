@@ -9,6 +9,7 @@ defmodule SunnySide.Accounts do
     field :payout_currency, :string
     field :payout_amount, :string
     field :status, :string
+    timestamps()
   end
 
   def changeset(account, params \\ %{}) do

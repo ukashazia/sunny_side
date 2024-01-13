@@ -18,27 +18,15 @@ defmodule SunnySideWeb.AccountLive.Index do
     |> noreply()
   end
 
-  def handle_info(:update, socket) do
-    socket
-    |> list_accounts()
-    |> noreply()
-  end
-
   def handle_event("edit", %{"account_number" => account_number}, socket) do
     socket
-    |> push_patch(to: "/accounts/#{account_number}/edit")
+    |> push_navigate(to: "/accounts/#{account_number}/edit")
     |> noreply()
   end
 
   def handle_event("new_account", _params, socket) do
     socket
-    |> push_patch(to: "/accounts/new")
-    |> noreply()
-  end
-
-  def handle_event("close-modal", _unsigned_params, socket) do
-    socket
-    |> push_patch(to: "/accounts")
+    |> push_navigate(to: "/accounts/new")
     |> noreply()
   end
 

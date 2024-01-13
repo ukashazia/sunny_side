@@ -1,8 +1,9 @@
 defmodule SunnySide.Account do
   alias SunnySide.{Repo, Accounts}
+  import Ecto.Query
 
   def list_accounts do
-    Accounts
+    from(a in Accounts, order_by: [desc: a.inserted_at, desc: a.updated_at])
     |> Repo.all()
   end
 
